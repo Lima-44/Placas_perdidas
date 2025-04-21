@@ -11,9 +11,13 @@
 <body>
     <h1>🔍 Placas Encontradas</h1>
 
-    <div class="gallery">
     <?php
     $conn = new mysqli(hostname: "localhost", username: "root", password: "oracle12457878?", database: 'placas');
+
+    if ($conn->connect_error) {
+        die("Falha na conexão: " . $conn->connect_error);
+    }
+
 
     // Parâmetros da busca
     $numero_placa = $_GET['numero_placa'] ?? '';
@@ -22,19 +26,19 @@
     // Monta a query SQL
     $sql = "SELECT * FROM placas WHERE 1=1";
 
-    if (!empty($numero_placa)) {
-        $sql .= " AND numero_placa LIKE '%" . $conn->real_escape_string(string: $numero_placa) . "%'";
+    if (!empty($placa)) {
+        $sql .= "AND numero_placa LIKE '%$placa%' ";
     }
 
     if (!empty($municipio)) {
-        // Campo município da tabela
-        $sql .= " AND municipio = '" . $conn->real_escape_string(string: $municipio) . "'";
+        $sql .= "AND municipio = '$municipio' ";
     }
 
     $result = $conn->query($sql);
 
     // Exibe resultados (similar ao lista_placas.php)
     if ($result->num_rows > 0) {
+        echo '<div class="gallery">';
         while ($row = $result->fetch_assoc()) {
             echo '<div class="placa-card">';
             echo '<img src="' . $row['foto_path'] . '" alt="Placa ' . $row['numero_placa'] . '">';
@@ -45,6 +49,7 @@
             echo 'Nome: ' . $row['seu_nome'] . '</p>';
             echo '</div>';
         }
+        echo '</div>';
     } else {
         echo "Nenhuma placa encontrada com os critérios selecionados.";
     }
@@ -52,6 +57,7 @@
     $conn->close();
 
     ?>
-    </div>
+
 </body>
+
 </html>

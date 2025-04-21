@@ -31,7 +31,9 @@
                 <option value="">Todos os municípios</option>
 
             </select>
-            <button type="submit">Buscar</button>
+            <button type="submit">Buscar
+                
+            </button>
         </form>
 
         <div class="gallery">
