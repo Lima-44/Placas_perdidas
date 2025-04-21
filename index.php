@@ -27,13 +27,8 @@
         <h2>Buscar Placa</h2>
         <form action="busca.php" method="GET">
             <input type="text" name="busca" placeholder="Digite o número da placa">
-            <select name="municipio" id="select-municipio">
-                <option value="">Todos os municípios</option>
-
-            </select>
-            <button type="submit">Buscar
-                
-            </button>
+            <input type="text" name="municipio" placeholder="Digite o município">
+            <button type="submit">Buscar</button>
         </form>
 
         <div class="gallery">
