@@ -4,7 +4,7 @@ $sql = "SELECT * FROM placas ORDER BY id DESC LIMIT 10";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
         echo '<div class="placa-card">';
         echo '<img src="' . $row['foto_path'] . '" alt="Placa ' . $row['numero_placa'] . '">';
         echo '<strong>' . $row['numero_placa'] . '</strong><br>';

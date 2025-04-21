@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="script.js"></script>
     <title>Placas Perdidas</title>
 </head>
+
 <body>
     <div class="container">
         <h1>🔍 Placas Perdidas</h1>
@@ -14,21 +16,21 @@
             <h2>Cadastrar Placa Encontrada</h2>
             <input type="text" name="numero_placa" placeholder="Número da Placa" required>
             <input type="text" name="local" placeholder="Onde foi encontrada?" required>
-            <input type="text" name="municipio"placeholder="Município onde foi encontrada"required>
+            <input type="text" name="municipio" placeholder="Município onde foi encontrada" required>
             <input type="file" name="foto" accept="image/*" required>
             <input type="text" name="contato" placeholder="Seu WhatsApp" required>
             <input type="text" name="seu_nome" placeholder="Seu nome" required>
             <button type="submit">Enviar</button>
-        </form>       
+        </form>
 
-            <hr>
+        <hr>
 
-            <h2>Buscar Placa</h2>
-            <form action="busca.php" method="GET">
+        <h2>Buscar Placa</h2>
+        <form action="busca.php" method="GET">
             <input type="text" name="busca" placeholder="Digite o número da placa">
             <select name="municipio" id="select-municipio">
-            <option value="">Todos os municípios</option>
-            
+                <option value="">Todos os municípios</option>
+
             </select>
             <button type="submit">Buscar</button>
         </form>
@@ -38,4 +40,5 @@
         </div>
     </div>
 </body>
+
 </html>

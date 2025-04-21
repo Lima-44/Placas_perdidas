@@ -1,6 +1,5 @@
-   
 <?php
-$conn = new mysqli(hostname:  "localhost", username:"root", password: "oracle12457878?", database:'placas');
+$conn = new mysqli(hostname: "localhost", username: "root", password: "oracle12457878?", database: 'placas');
 
 // Parâmetros da busca
 $numero_placa = $_GET['busca'] ?? '';
@@ -22,7 +21,7 @@ $result = $conn->query($sql);
 
 // Exibe resultados (similar ao lista_placas.php)
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
         echo '<div class="placa-card">';
         echo '<img src="' . $row['foto_path'] . '" alt="Placa ' . $row['numero_placa'] . '">';
         echo '<p><strong>' . $row['numero_placa'] . '</strong><br>';
@@ -39,5 +38,3 @@ if ($result->num_rows > 0) {
 $conn->close();
 
 ?>
-</body>
-</html>
