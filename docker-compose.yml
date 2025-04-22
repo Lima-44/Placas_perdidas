@@ -1,0 +1,33 @@
+version: '3.8'
+services: 
+  placasPerdidas:
+    image: placas-perdidas
+    container_name: placas-perdidas
+    volumes:
+      - ./:/usr/share/nginx/html
+    build: .
+    ports:
+      - 80:80 
+    environment:
+      DB_HOST: mysql-db
+      DB_NAME: placas
+      DB_USER: root
+      DB_PASSWORD: oracle12457878?
+    depends_on:
+      - mysql-db
+ 
+  mysql-db:
+      image: mysql:8.0
+      container_name: mysql-db
+      restart: always
+      ports:
+        - 3306:3306
+      environment:
+        MYSQL_ROOT_PASSWORD: oracle12457878?
+        MYSQL_DATABASE: placas
+      volumes:
+        - mysql-data:/var/lib/mysql
+        - ./mysql-init:/docker-entrypoint-initdb.d
+  
+volumes:
+  mysql-data:

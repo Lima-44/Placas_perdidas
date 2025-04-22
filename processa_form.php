@@ -1,27 +1,50 @@
 <?php
 // Conecta ao banco de dados
-$conn = new mysqli(hostname: "localhost", username: "root", password: "oracle12457878?", database: 'placas');
+require_once 'Database.php';
 
-// Verifica conexão
-if ($conn->connect_error) {
-    die("Falha na conexão: " . $conn->connect_error);
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $db = Database::connect();
 
-// Processa upload da imagem
-$target_dir = "uploads/";
-$target_file = $target_dir . basename($_FILES["foto"]["name"]);
-move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file);
+    try {
+        $db->beginTransaction();
 
-// Insere dados no banco
-$sql = "INSERT INTO placas (numero_placa, local_encontrado, foto_path, contato, municipio, seu_nome) 
-        VALUES ('" . $_POST['numero_placa'] . "', '" . $_POST['local'] . "', '" . $target_file . "', '" . $_POST['contato'] . "','" . $_POST['municipio'] . "','" . $_POST['seu_nome'] . "')";
+        // Processa o upload da imagem
+        $target_dir = "uploads/";
+        $filename = basename($_FILES["foto"]["name"]);
+        $target_file = $target_dir . $filename;
 
-if ($conn->query($sql)) {
-    echo "Placa cadastrada com sucesso!";
+        if (!move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file)) {
+            throw new Exception('Falha no upload da imagem.');
+        }
+
+        // Prepara o insert seguro
+        $stmt = $db->prepare("INSERT INTO placas (numero_placa, local_encontrado, foto_path, contato, municipio, seu_nome) 
+                              VALUES (:numero_placa, :local_encontrado, :foto_path, :contato, :municipio, :seu_nome)");
+
+        $stmt->bindParam(':numero_placa', $_POST['numero_placa']);
+        $stmt->bindParam(':local_encontrado', $_POST['local']);
+        $stmt->bindParam(':foto_path', $target_file);
+        $stmt->bindParam(':contato', $_POST['contato']);
+        $stmt->bindParam(':municipio', $_POST['municipio']);
+        $stmt->bindParam(':seu_nome', $_POST['seu_nome']);
+
+        $stmt->execute();
+
+        $db->commit();
+
+        echo "Placa cadastrada com sucesso!";
+    } catch (Exception $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+        echo "Erro: " . $e->getMessage();
+    } finally {
+        Database::disconnect();
+        header("Location: index.php");
+        exit;
+    }
 } else {
-    echo "Erro: " . $conn->error;
+    header("Location: index.php");
+    exit;
 }
-
-$conn->close();
-header("Location: index.php"); // Volta para a página inicial
 ?>
